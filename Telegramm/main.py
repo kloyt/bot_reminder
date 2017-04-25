@@ -1,4 +1,7 @@
+from datetime import datetime
+
 import telebot
+import time
 
 import request_parser
 from reminder_DB import SQL_requests
@@ -43,6 +46,7 @@ def command_remind(message):
         request = str(message.text)
         request_data = request_parser.setRequest(request)
         print(request_data["Text"] + " - " + str(request_data["Date"]))
+        add_timer(request_data["Text"], request_data["Date"], message.chat.id)
     else:
         TelegramBot.send_message(message.chat.id, "Добро пожаловать. На каком языке будем общаться? \nWelcome. What "
                                                   "language do you know?",
@@ -56,8 +60,7 @@ def command_start(message):
     user = Authorization.check_user(message.chat.id)
     if user is not None:
         print("Вы у нас уже есть))")
-        # TelegramBot.send_message(message.chat.id, "Добро пожаловать",
-        #                         reply_markup=keyboard_main)
+        TelegramBot.send_message(message.chat.id, "Привет, " + message.chat.first_name,)
     else:
         TelegramBot.send_message(message.chat.id, "Добро пожаловать. На каком языке будем общаться? \nWelcome. What "
                                                   "language do you know?",
@@ -67,6 +70,13 @@ def command_start(message):
 @TelegramBot.message_handler(func=lambda message: True, content_types=["text"])
 def text_definition(message):
     print(message)
+
+
+def add_timer(remind_text, date, message_chat_id):
+    date = datetime.time(date)
+    while date > time.time():
+        print("Timer инициализирован")
+        TelegramBot.send_message(message_chat_id, text=remind_text)
 
 
 if __name__ == '__main__':

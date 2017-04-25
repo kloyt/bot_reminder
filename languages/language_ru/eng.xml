@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recipe>
+    <hallo>
+        <ru>Добро пожаловать!</ru>
+        <eng>Hallo!</eng>
+    </hallo>
+
+    <request>
+        <ru>Напоминание</ru>
+        <eng>Remind</eng>
+    </request>
+</recipe>
