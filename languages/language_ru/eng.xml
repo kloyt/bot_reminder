@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<recipe>
+<translate>
     <hallo>
         <ru>Добро пожаловать!</ru>
         <eng>Hallo!</eng>
@@ -9,4 +9,4 @@
         <ru>Напоминание</ru>
         <eng>Remind</eng>
     </request>
-</recipe>
+</translate>

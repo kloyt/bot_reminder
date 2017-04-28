@@ -46,7 +46,7 @@ def command_remind(message):
         request = str(message.text)
         request_data = request_parser.setRequest(request)
         print(request_data["Text"] + " - " + str(request_data["Date"]))
-        add_timer(request_data["Text"], request_data["Date"], message.chat.id)
+        add_timer(request_data["Text"], request_data["Date"], message)
     else:
         TelegramBot.send_message(message.chat.id, "Добро пожаловать. На каком языке будем общаться? \nWelcome. What "
                                                   "language do you know?",
@@ -54,7 +54,6 @@ def command_remind(message):
 
 
 # Если пользователь запрашивает /start ДОДЕЛАТЬ
-
 @TelegramBot.message_handler(commands=['start'])
 def command_start(message):
     user = Authorization.check_user(message.chat.id)
@@ -67,16 +66,28 @@ def command_start(message):
                                  reply_markup=keyboard_check_lang)
 
 
+# Обработчик всех текстовых сообщений от пользователя
 @TelegramBot.message_handler(func=lambda message: True, content_types=["text"])
 def text_definition(message):
     print(message)
 
 
-def add_timer(remind_text, date, message_chat_id):
+def add_timer(remind_text, date, message):
+    now = time_now()
     date = datetime.time(date)
-    while date > time.time():
+    while date > now:
+        now = time_now()
         print("Timer инициализирован")
-        TelegramBot.send_message(message_chat_id, text=remind_text)
+        TelegramBot.send_message(message.chat.id, text=remind_text + " в " + str(date))
+        time.sleep(15)
+
+
+def time_now():
+    now = datetime.now()
+    now = now.strftime("%H:%M")
+    now = datetime.strptime(now, "%H:%M")
+    now = datetime.time(now)
+    return now
 
 
 if __name__ == '__main__':
